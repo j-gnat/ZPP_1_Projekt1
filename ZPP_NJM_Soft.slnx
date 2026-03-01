@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="zpp_njm_soft.client/zpp_njm_soft.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="ZPP_NJM_Soft.Server/ZPP_NJM_Soft.Server.csproj" />
+</Solution>

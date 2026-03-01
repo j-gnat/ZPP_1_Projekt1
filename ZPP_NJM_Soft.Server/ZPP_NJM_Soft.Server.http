@@ -1,0 +1,6 @@
+@ZPP_NJM_Soft.Server_HostAddress = http://localhost:5072
+
+GET {{ZPP_NJM_Soft.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
