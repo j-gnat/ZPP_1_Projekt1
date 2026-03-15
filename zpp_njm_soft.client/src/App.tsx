@@ -1,12 +1,13 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
-import Login from './Login.tsx';
-import Dashboard from './Dashboard.tsx';
-import Page1 from './Page1.tsx';
-import Page2 from './Page2.tsx';
-import Page3 from './Page3.tsx';
-import Page4 from './Page4.tsx';
-import Page5 from './Page5.tsx';
+import Login from './pages/Login/Login.tsx';
+import Dashboard from './pages/Dashboard/Dashboard.tsx';
+import SalesFunnel from './pages/SalesFunnel/SalesFunnel.tsx';
+import CRM from './pages/CRM/CRM.tsx';
+import Communication from './pages/Communication/Communication.tsx';
+import Courses from './pages/Courses/Courses.tsx';
+import Documents from './pages/Documents/Documents.tsx';
+import Calendar from './pages/Calendar/Calendar.tsx';
 
 function App() {
     const navigate = useNavigate();
@@ -53,11 +54,12 @@ function App() {
             } />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/page1" element={<Page1 />} />
-            <Route path="/page2" element={<Page2 />} />
-            <Route path="/page3" element={<Page3 />} />
-            <Route path="/page4" element={<Page4 />} />
-            <Route path="/page5" element={<Page5 />} />
+            <Route path="/sales-funnel" element={<SalesFunnel />} />
+            <Route path="/crm" element={<CRM />} />
+            <Route path="/communication" element={<Communication />} />
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/documents" element={<Documents />} />
+            <Route path="/calendar" element={<Calendar />} />
         </Routes>
     );
 }

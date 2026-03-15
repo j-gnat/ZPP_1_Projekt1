@@ -1,18 +1,18 @@
-import Sidebar from './Sidebar';
-import './Dashboard.css';
+import Sidebar from '../../Sidebar';
+import '../Page.css';
 
 function Dashboard() {
     return (
-        <div className="dashboard">
-            <header className="dashboard-header">
+        <div className="page">
+            <header className="page-header">
                 <div className="logo">NJM_Soft</div>
             </header>
-            <div className="dashboard-content">
+            <div className="page-content">
+                <Sidebar />
                 <div className="main-content">
                     <h1>Dashboard</h1>
                     <p>Witaj w panelu administracyjnym.</p>
                 </div>
-                <Sidebar />
             </div>
         </div>
     );
