@@ -5,11 +5,12 @@ function Sidebar() {
     const navigate = useNavigate();
 
     const buttons = [
-        { label: 'Strona 1', path: '/page1' },
-        { label: 'Strona 2', path: '/page2' },
-        { label: 'Strona 3', path: '/page3' },
-        { label: 'Strona 4', path: '/page4' },
-        { label: 'Strona 5', path: '/page5' },
+        { label: 'Sales Funnel', path: '/sales-funnel' },
+        { label: 'CRM', path: '/crm' },
+        { label: 'Communication', path: '/communication' },
+        { label: 'Courses', path: '/courses' },
+        { label: 'Documents', path: '/documents' },
+        { label: 'Calendar', path: '/calendar' },
     ];
 
     return (

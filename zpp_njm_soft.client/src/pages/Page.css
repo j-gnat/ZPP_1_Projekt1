@@ -1,7 +1,14 @@
+body {
+    background-color: #f0f0f0;
+}
+
 .page {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 90vh;
+    width: 80vw;
+    margin: 0 auto;
+    background-color: white;
 }
 
 .page-header {
@@ -24,6 +31,6 @@
 }
 
 .main-content {
-    flex: 1;
+    flex: 0 0 80%;
     padding: 2rem;
 }

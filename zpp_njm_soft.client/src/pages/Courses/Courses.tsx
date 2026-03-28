@@ -1,21 +1,21 @@
-import Sidebar from './Sidebar';
-import './Page.css';
+import Sidebar from '../../Sidebar';
+import '../Page.css';
 
-function Page3() {
+function Courses() {
     return (
         <div className="page">
             <header className="page-header">
                 <div className="logo">NJM_Soft</div>
             </header>
             <div className="page-content">
-                <div className="main-content">
-                    <h1>Strona 3</h1>
-                    <p>To jest zawartość strony 3.</p>
-                </div>
                 <Sidebar />
+                <div className="main-content">
+                    <h1>Courses</h1>
+                    <p>To jest zawartość strony 4.</p>
+                </div>
             </div>
         </div>
     );
 }
 
-export default Page3;
+export default Courses;
