@@ -1,27 +1,63 @@
-import { useNavigate } from 'react-router-dom';
-import './Sidebar.css';
+import { useNavigate, useLocation } from "react-router-dom";
+import "./Sidebar.css";
+
 
 function Sidebar() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const buttons = [
-        { label: 'Sales Funnel', path: '/sales-funnel' },
-        { label: 'CRM', path: '/crm' },
-        { label: 'Communication', path: '/communication' },
-        { label: 'Courses', path: '/courses' },
-        { label: 'Documents', path: '/documents' },
-        { label: 'Calendar', path: '/calendar' },
-    ];
+  const sections = [
+    {
+      label: "Menu główne",
+      buttons: [
+        { label: "Dashboard", path: "/dashboard", icon: "⊞" },
+      ],
+    },
+    {
+      label: "Marketing",
+      buttons: [
+        { label: "Lejki sprzedaży", path: "/sales-funnel", icon: "◈" },
+        { label: "CRM", path: "/crm", icon: "◉" },
+        { label: "Komunikacja", path: "/communication", icon: "◎" },
+      ],
+    },
+    {
+      label: "Biznes",
+      buttons: [
+        { label: "Kursy", path: "/courses", icon: "◇" },
+        { label: "Dokumenty", path: "/documents", icon: "◻" },
+        { label: "Kalendarz", path: "/calendar", icon: "◷" },
+      ],
+    },
+  ];
 
-    return (
-        <div className="sidebar">
-            {buttons.map((button, index) => (
-                <button key={index} className="sidebar-btn" onClick={() => navigate(button.path)}>
-                    {button.label}
-                </button>
+  return (
+    <aside className="sidebar">
+      {sections.map(section => (
+        <div key={section.label} className="sidebar-section">
+          <div className="sidebar-section-title">
+            {section.label}
+          </div>
+
+          <div className="sidebar-buttons">
+            {section.buttons.map(btn => (
+              <button
+                key={btn.path}
+                className={`sidebar-button ${
+                  location.pathname === btn.path ? "active" : ""
+                }`}
+                onClick={() => navigate(btn.path)}
+              >
+                <span className="icon">{btn.icon}</span>
+                {btn.label}
+              </button>
             ))}
+          </div>
         </div>
-    );
+      ))}
+    </aside>
+  );
 }
+
 
 export default Sidebar;
