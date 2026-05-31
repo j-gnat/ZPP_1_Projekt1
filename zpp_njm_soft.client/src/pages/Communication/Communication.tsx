@@ -19,6 +19,33 @@ type Campaign = {
     body: string;
 };
 
+type ApiCampaign = {
+    id: number;
+    name: string;
+    type: string;
+    status: string;
+    sent: number;
+    opened: number;
+    scheduledFor: string | null;
+    subject: string | null;
+    body: string;
+    createdAt: string;
+};
+
+const mapFromApi = (c: ApiCampaign): Campaign => ({
+    id: String(c.id),
+    name: c.name,
+    type: (c.type === "SMS" ? "SMS" : "Email"),
+    status: (c.status === "active" || c.status === "scheduled" || c.status === "paused" || c.status === "draft")
+        ? c.status
+        : "draft",
+    sent: c.sent,
+    opened: c.opened,
+    scheduledFor: c.scheduledFor ? c.scheduledFor.slice(0, 16) : undefined,
+    subject: c.subject ?? undefined,
+    body: c.body,
+});
+
 const initialCampaigns: Campaign[] = [
     {
         id: "1",
@@ -93,6 +120,7 @@ const newId = () => `local-${++idCounter}`;
 const Communication: React.FC = () => {
     const [tab, setTab] = React.useState<Tab>("campaigns");
     const [campaigns, setCampaigns] = React.useState<Campaign[]>(() => initialCampaigns);
+    const [loading, setLoading] = React.useState(false);
 
     const [query, setQuery] = React.useState("");
     const [typeFilter, setTypeFilter] = React.useState<"all" | CampaignType>("all");
@@ -117,6 +145,24 @@ const Communication: React.FC = () => {
             if (sentTimeoutRef.current) window.clearTimeout(sentTimeoutRef.current);
         };
     }, []);
+
+    const loadCampaigns = React.useCallback(async () => {
+        setLoading(true);
+        try {
+            const res = await fetch("/api/campaigns");
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = (await res.json()) as ApiCampaign[];
+            setCampaigns(data.map(mapFromApi));
+        } catch {
+            flashNotice("Nie udało się pobrać kampanii z API. Pokazuję dane przykładowe.");
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    React.useEffect(() => {
+        void loadCampaigns();
+    }, [loadCampaigns]);
 
     const visibleCampaigns = React.useMemo(() => {
         const q = query.trim().toLowerCase();
@@ -180,31 +226,56 @@ const Communication: React.FC = () => {
 
         const status: CampaignStatus = scheduledFor ? "scheduled" : "draft";
 
-        const next: Campaign = {
-            id: newId(),
+        const payload = {
             name,
             type: campaignType,
             status,
             sent: 0,
             opened: 0,
-            scheduledFor: scheduledFor || undefined,
-            subject: campaignType === "Email" ? subj : undefined,
+            scheduledFor: scheduledFor ? new Date(scheduledFor).toISOString() : null,
+            subject: campaignType === "Email" ? subj : null,
             body: msg,
         };
 
-        setCampaigns((prev) => [next, ...prev]);
-        setCampaignName("");
-        setSubject("");
-        setBody("");
-        setScheduledFor("");
-        setTestRecipient("");
-        setTab("campaigns");
+        setLoading(true);
+        fetch("/api/campaigns", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        })
+            .then(async (res) => {
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const created = (await res.json()) as ApiCampaign;
+                setCampaigns((prev) => [mapFromApi(created), ...prev]);
+                setCampaignName("");
+                setSubject("");
+                setBody("");
+                setScheduledFor("");
+                setTestRecipient("");
+                setTab("campaigns");
 
-        setSent(true);
-        if (sentTimeoutRef.current) window.clearTimeout(sentTimeoutRef.current);
-        sentTimeoutRef.current = window.setTimeout(() => setSent(false), 2500);
+                setSent(true);
+                if (sentTimeoutRef.current) window.clearTimeout(sentTimeoutRef.current);
+                sentTimeoutRef.current = window.setTimeout(() => setSent(false), 2500);
 
-        flashNotice("Kampania utworzona.");
+                flashNotice("Kampania zapisana w bazie.");
+            })
+            .catch(() => {
+                const next: Campaign = {
+                    id: newId(),
+                    name,
+                    type: campaignType,
+                    status,
+                    sent: 0,
+                    opened: 0,
+                    scheduledFor: scheduledFor || undefined,
+                    subject: campaignType === "Email" ? subj : undefined,
+                    body: msg,
+                };
+                setCampaigns((prev) => [next, ...prev]);
+                flashNotice("Nie udało się zapisać do API. Dodano lokalnie (zniknie po odświeżeniu). ");
+            })
+            .finally(() => setLoading(false));
     };
 
     const duplicateCampaign = (id: string) => {
@@ -286,6 +357,8 @@ const Communication: React.FC = () => {
                 {tab === "campaigns" && (
                     <div className="card">
                         <h2>Wszystkie kampanie</h2>
+
+                        {loading && <div style={{ color: "#6b7280", marginBottom: 10 }}>Ładowanie...</div>}
 
                         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", margin: "10px 0 16px" }}>
                             <input
@@ -455,6 +528,7 @@ const Communication: React.FC = () => {
                                 className="btn-primary-modern"
                                 onClick={createCampaign}
                                 disabled={
+                                    loading ||
                                     sent ||
                                     !campaignName.trim() ||
                                     !body.trim() ||
@@ -464,6 +538,7 @@ const Communication: React.FC = () => {
                                     alignSelf: "flex-start",
                                     background: sent ? "#059669" : undefined,
                                     opacity:
+                                        loading ||
                                         sent ||
                                         !campaignName.trim() ||
                                         !body.trim() ||
@@ -471,6 +546,7 @@ const Communication: React.FC = () => {
                                             ? 0.6
                                             : 1,
                                     cursor:
+                                        loading ||
                                         sent ||
                                         !campaignName.trim() ||
                                         !body.trim() ||

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "../../Sidebar";
 import { useParams, useNavigate } from "react-router-dom";
 import "../Page.css";
 import "./SalesFunnel.css";
