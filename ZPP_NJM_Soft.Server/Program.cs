@@ -91,10 +91,33 @@ namespace ZPP_NJM_Soft.Server
                 }
                 if (!db.Courses.Any())
                 {
-                    db.Courses.AddRange(
-                        new Course { Title = "Marketing Cyfrowy", Description = "Podstawy budowania lejków sprzedaży." },
-                        new Course { Title = "Zarządzanie CRM", Description = "Efektywne zarządzanie bazą klientów." }
-                    );
+                    
+                    var marketingCourse = new Course 
+                    { 
+                        Title = "Marketing Cyfrowy", 
+                        Description = "Podstawy budowania lejków sprzedaży.",
+                        Modules = new List<Module>()
+                    };
+
+                    var module1 = new Module { Name = "Wprowadzenie do marketingu", Order = 1, Course = marketingCourse };
+                    var module2 = new Module { Name = "Budowanie lejków", Order = 2, Course = marketingCourse };
+
+                    module1.Lessons = new List<Lesson>
+                    {
+                        new Lesson { Title = "Czym jest marketing cyfrowy?", Content = "Treść lekcji 1", VideoUrl = "https://example.com/video1.mp4", Module = module1 },
+                        new Lesson { Title = "Podstawowe pojęcia", Content = "Treść lekcji 2", VideoUrl = "https://example.com/video2.mp4", Module = module1 }
+                    };
+
+                    module2.Lessons = new List<Lesson>
+                    {
+                        new Lesson { Title = "Jak stworzyć lejek?", Content = "Treść lekcji 3", VideoUrl = "https://example.com/video3.mp4", Module = module2 }
+                    };
+
+                    // 4. Dodajemy wszystko do bazy
+                    db.Courses.Add(marketingCourse);
+                    db.Modules.AddRange(module1, module2);
+                    db.Lessons.AddRange(module1.Lessons.Concat(module2.Lessons));
+                    
                     db.SaveChanges();
                 }
             }

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Sidebar from '../../Sidebar';
 import '../Page.css';
 import './Courses.css'; //
+import { useNavigate } from 'react-router-dom';
 
 // Definicja typu zgodna z modelem w C#
 interface Course {
@@ -11,6 +12,7 @@ interface Course {
 }
 
 function Courses() {
+    const navigate = useNavigate();
     const [courses, setCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -42,7 +44,9 @@ function Courses() {
                                 <div key={course.id} className="course-card">
                                     <h3>{course.title}</h3>
                                     <p>{course.description}</p>
-                                    <button className="course-btn">Otwórz kurs</button>
+                                    <button className="course-btn" onClick={() => navigate(`/courses/${course.id}`)}>
+                                        Otwórz kurs
+                                    </button>
                                 </div>
                             ))}
                         </div>

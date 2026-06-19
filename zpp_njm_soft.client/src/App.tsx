@@ -17,6 +17,7 @@ import Leads from "./pages/SalesFunnel/Leads.tsx";
 import Popups from "./pages/SalesFunnel/Popups.tsx";
 import Stats from "./pages/SalesFunnel/Stats.tsx";
 import FunnelSettings from "./pages/SalesFunnel/FunnelSettings.tsx";
+import CourseDetails from "./pages/Courses/CourseDetails.tsx";
 
 function Home() {
     const navigate = useNavigate();
@@ -94,6 +95,7 @@ function App() {
             <Route path="/popups" element={<Popups />} />
             <Route path="/stats" element={<Stats />} />
             <Route path="/funnel-settings" element={<FunnelSettings />} />
+            <Route path="/courses/:courseId" element={<CourseDetails />} />
         </Routes>
     );
 }
