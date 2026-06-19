@@ -89,6 +89,14 @@ namespace ZPP_NJM_Soft.Server
 
                     db.SaveChanges();
                 }
+                if (!db.Courses.Any())
+                {
+                    db.Courses.AddRange(
+                        new Course { Title = "Marketing Cyfrowy", Description = "Podstawy budowania lejków sprzedaży." },
+                        new Course { Title = "Zarządzanie CRM", Description = "Efektywne zarządzanie bazą klientów." }
+                    );
+                    db.SaveChanges();
+                }
             }
 
             app.UseDefaultFiles();

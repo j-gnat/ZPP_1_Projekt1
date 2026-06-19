@@ -10,4 +10,9 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<Campaign> Campaigns => Set<Campaign>();
+    public DbSet<Course> Courses => Set<Course>();
+    public DbSet<Module> Modules => Set<Module>();
+    public DbSet<Lesson> Lessons => Set<Lesson>();
+    public DbSet<UserRole> UserRoles => Set<UserRole>();
+    
 }
