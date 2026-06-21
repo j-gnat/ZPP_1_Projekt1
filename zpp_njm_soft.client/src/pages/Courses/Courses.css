@@ -398,6 +398,40 @@
 .badge-desc { font-size: 11px; color: #6b7280; }
 .badge-locked { opacity: 0.4; filter: grayscale(1); }
 
+/* Modale i formularze płatności/podpisu */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 380px;
+    max-width: calc(100% - 32px);
+    box-shadow: 0 10px 30px rgba(2,6,23,0.2);
+}
+.modal h2 { margin: 0 0 12px; font-size: 18px; }
+.modal .modal-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.modal .input { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #e5e7eb; font-size: 14px; }
+.modal .input:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.08); }
+.payment-form { display: flex; flex-direction: column; gap: 10px; }
+.card-visual { background: linear-gradient(90deg,#6366f1,#818cf8); color: white; padding: 12px; border-radius: 10px; font-weight: 600; display: flex; flex-direction: column; gap: 6px; }
+.card-row { display:flex; gap:8px; }
+.small-input { flex:1; }
+.save-card { display:flex; align-items:center; gap:8px; font-size:13px; color:#374151; }
+.payment-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:6px; }
+.signature-methods { display:flex; gap:8px; margin-bottom:12px; }
+.signature-methods button { padding:8px 10px; border-radius:8px; border:1px solid #e5e7eb; background:#f9fafb; cursor:pointer; }
+.signature-methods button.active { background:#6366f1; color:white; border-color:#6366f1; }
+.signature-canvas { width:100%; height:180px; border:1px solid #e5e7eb; border-radius:8px; cursor:crosshair; }
+.signature-tools { display:flex; gap:8px; justify-content:flex-end; margin-top:8px; }
+.payment-success { text-align:center; color:#065f46; font-weight:700; }
 .stats-row-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));

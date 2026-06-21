@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+type User = { username: string; password: string };
+
+const USERS: User[] = [
+    { username: "admin", password: "admin" },
+    { username: "jan", password: "jan123" },
+];
+
 function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -9,7 +16,8 @@ function Login() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (username === "admin" && password === "admin") {
+        const match = USERS.find(u => u.username === username && u.password === password);
+        if (match) {
             navigate("/dashboard");
         } else {
             setError("Nieprawidłowy login lub hasło");
@@ -45,7 +53,7 @@ function Login() {
                                     type="text"
                                     value={username}
                                     onChange={e => setUsername(e.target.value)}
-                                    placeholder="admin"
+                                    placeholder="admin lub jan"
                                     style={{ width: "100%", padding: "10px 14px", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 8, fontSize: 15, color: "white", outline: "none", boxSizing: "border-box" }}
                                 />
                             </div>
@@ -73,9 +81,10 @@ function Login() {
                                 Zaloguj się
                             </button>
                         </form>
-                        <p style={{ textAlign: "center", marginTop: 20, fontSize: 13, color: "rgba(255,255,255,0.35)", marginBottom: 0 }}>
-                            Login: <strong style={{ color: "rgba(255,255,255,0.5)" }}>admin</strong> / Hasło: <strong style={{ color: "rgba(255,255,255,0.5)" }}>admin</strong>
-                        </p>
+                        <div style={{ marginTop: 20, fontSize: 13, color: "rgba(255,255,255,0.35)", textAlign: "center" }}>
+                            <div>Admin: <strong style={{ color: "rgba(255,255,255,0.5)" }}>admin</strong> / <strong style={{ color: "rgba(255,255,255,0.5)" }}>admin</strong></div>
+                            <div>Użytkownik: <strong style={{ color: "rgba(255,255,255,0.5)" }}>jan</strong> / <strong style={{ color: "rgba(255,255,255,0.5)" }}>jan123</strong></div>
+                        </div>
                     </div>
                 </div>
             </div>

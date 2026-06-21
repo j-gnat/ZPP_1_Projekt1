@@ -91,10 +91,9 @@ namespace ZPP_NJM_Soft.Server
                 }
                 if (!db.Courses.Any())
                 {
-                    
-                    var marketingCourse = new Course 
-                    { 
-                        Title = "Marketing Cyfrowy", 
+                    var marketingCourse = new Course
+                    {
+                        Title = "Marketing Cyfrowy",
                         Description = "Podstawy budowania lejków sprzedaży.",
                         Modules = new List<Module>()
                     };
@@ -113,11 +112,35 @@ namespace ZPP_NJM_Soft.Server
                         new Lesson { Title = "Jak stworzyć lejek?", Content = "Treść lekcji 3", VideoUrl = "https://example.com/video3.mp4", Module = module2 }
                     };
 
-                    // 4. Dodajemy wszystko do bazy
                     db.Courses.Add(marketingCourse);
                     db.Modules.AddRange(module1, module2);
                     db.Lessons.AddRange(module1.Lessons.Concat(module2.Lessons));
-                    
+
+                    var seoLockCourse = new Course
+                    {
+                        Title = "SEO dla Początkujących",
+                        Description = "Naucz się pozycjonowania stron od podstaw. Kurs dostępny po zakupie lub podpisaniu dokumentu.",
+                        Modules = new List<Module>()
+                    };
+
+                    var seoModule1 = new Module { Name = "Podstawy SEO", Order = 1, Course = seoLockCourse };
+                    var seoModule2 = new Module { Name = "Link Building", Order = 2, Course = seoLockCourse };
+
+                    seoModule1.Lessons = new List<Lesson>
+                    {
+                        new Lesson { Title = "Czym jest SEO?", Content = "Treść lekcji SEO 1", VideoUrl = "https://example.com/seo1.mp4", Module = seoModule1 },
+                        new Lesson { Title = "Słowa kluczowe", Content = "Treść lekcji SEO 2", VideoUrl = "https://example.com/seo2.mp4", Module = seoModule1 }
+                    };
+
+                    seoModule2.Lessons = new List<Lesson>
+                    {
+                        new Lesson { Title = "Jak zdobywać linki?", Content = "Treść lekcji SEO 3", VideoUrl = "https://example.com/seo3.mp4", Module = seoModule2 }
+                    };
+
+                    db.Courses.Add(seoLockCourse);
+                    db.Modules.AddRange(seoModule1, seoModule2);
+                    db.Lessons.AddRange(seoModule1.Lessons.Concat(seoModule2.Lessons));
+
                     db.SaveChanges();
                 }
             }
@@ -125,7 +148,6 @@ namespace ZPP_NJM_Soft.Server
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -133,12 +155,8 @@ namespace ZPP_NJM_Soft.Server
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
-
             app.MapFallbackToFile("/index.html");
 
             app.Run();
